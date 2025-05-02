@@ -16,7 +16,14 @@ public class Profile {
     @Column
     private Long id;
 
+    @Column(name = "name")
+    private String name;
+
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", unique = true)
     private User user;
+
+    public Profile(String name) {
+        this.name = name;
+    }
 }

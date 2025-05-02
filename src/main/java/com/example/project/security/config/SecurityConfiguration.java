@@ -2,6 +2,7 @@ package com.example.project.security.config;
 
 
 import com.example.project.security.filter.JwtFilter;
+import com.example.project.security.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,6 +11,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,9 +24,11 @@ public class SecurityConfiguration {
 
 
     private JwtFilter jwtFilter;
+    private CustomUserDetailsService userDetailsService;
 
-    public SecurityConfiguration(JwtFilter jwtFilter) {
+    public SecurityConfiguration(JwtFilter jwtFilter, CustomUserDetailsService userDetailsService) {
         this.jwtFilter = jwtFilter;
+        this.userDetailsService = userDetailsService;
     }
 
     private SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -39,6 +44,11 @@ public class SecurityConfiguration {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return userDetailsService;
     }
 
     @Bean

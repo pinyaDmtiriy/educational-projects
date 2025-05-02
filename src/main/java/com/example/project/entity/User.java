@@ -25,11 +25,14 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @OneToOne(mappedBy = "user")
     private Password password;
+
+    @OneToOne(mappedBy = "user")
+    private Status status;
 
     @ManyToMany
     @JoinTable
@@ -49,5 +52,25 @@ public class User implements UserDetails {
                 .map(Role::getRoleName)
                 .collect(Collectors.toSet());
     }
+
+    public User(String username, Password password, Status status, Set<Role> roles, Profile profile) {
+        this.username = username;
+        this.password = password;
+        this.status = status;
+        this.roles = roles;
+        this.profile = profile;
+    }
+
+    public void addProfile(Profile profile) {
+        if(this.profile != null) {
+         this.profile.setUser(null);
+        }
+        this.profile = profile;
+        if(profile != null && profile.getUser() != this) {
+            profile.setUser(this);
+        }
+    }
+
+
 
 }

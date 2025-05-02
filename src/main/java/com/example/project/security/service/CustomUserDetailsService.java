@@ -1,5 +1,6 @@
-package com.example.project.service.security;
+package com.example.project.security.service;
 
+import com.example.project.entity.User;
 import com.example.project.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,4 +20,5 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userService.getByUsername(username);
     }
+
 }
