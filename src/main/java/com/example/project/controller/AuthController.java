@@ -34,7 +34,7 @@ public class AuthController {
 
         userService.checkStatus(user);
 
-        return jwtUtil.getToken(user);
+        return jwtUtil.generateToken(user);
     }
 
     @PostMapping("/registration")
