@@ -1,6 +1,7 @@
 package com.example.project.controller;
 
 import com.example.project.dto.AuthDto;
+import com.example.project.dto.RegistrationUserDto;
 import com.example.project.entity.User;
 import com.example.project.security.util.JwtUtil;
 import com.example.project.service.UserService;
@@ -38,7 +39,7 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
-    public void registration(@RequestBody AuthDto authDto) {
+    public void registration(@RequestBody RegistrationUserDto authDto) {
         userService.create(authDto);
     }
 }

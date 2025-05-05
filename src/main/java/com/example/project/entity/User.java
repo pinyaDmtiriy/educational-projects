@@ -59,6 +59,12 @@ public class User implements UserDetails {
                 .collect(Collectors.toSet());
     }
 
+    public User(String username, String password, FirstEmails firstEmail) {
+        this.username = username;
+        this.password = password;
+        this.firstEmail = firstEmail;
+    }
+
     public User(String username, String password, StatusName status, Set<Role> roles) {
         this.username = username;
         this.password = password;
@@ -66,21 +72,24 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
     public void addProfile(Profile profile) {
         if(this.profile != null) {
          this.profile.setUser(null);
         }
         this.profile = profile;
-        if(profile != null && profile.getUser() != this) {
+        if(profile != null) {
             profile.setUser(this);
         }
     }
 
-
+    public void addFirstEmail(FirstEmails firstEmail) {
+        if(this.firstEmail != null) {
+            this.firstEmail.setUser(null);
+        }
+        this.firstEmail = firstEmail;
+        if(firstEmail != null) {
+            firstEmail.setUser(this);
+        }
+    }
 
 }

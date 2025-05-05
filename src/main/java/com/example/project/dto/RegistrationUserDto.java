@@ -3,11 +3,13 @@ package com.example.project.dto;
 import com.example.project.validation.annotations.Password;
 import com.example.project.validation.annotations.Username;
 
-public record AuthDto
+public record RegistrationUserDto
         (
-                @Username(allowEmpty = false)
+                @Username
                 String username,
-                @Password(allowEmpty = false)
+                @Username
+                String firstEmail,
+                @Password
                 String password
         )
 {

@@ -1,6 +1,7 @@
 package com.example.project.controller;
 
 import com.example.project.dto.UpdateUserDto;
+import com.example.project.dto.UserDto;
 import org.springframework.data.domain.Page;
 import com.example.project.entity.User;
 import com.example.project.service.UserService;
@@ -8,10 +9,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
+@Validated
 public class UserController {
 
     private UserService userService;
@@ -21,7 +24,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Page<User>> getUsers
+    public ResponseEntity<Page<UserDto>> getUsers
             (
                     @PageableDefault
                             (
@@ -34,12 +37,12 @@ public class UserController {
     }
 
     @GetMapping("/get-byUsername/{username}")
-    public ResponseEntity<User> getByUsername(@PathVariable String username) {
+    public ResponseEntity<UserDto> getByUsername(@PathVariable String username) {
         return ResponseEntity.ok(userService.getByUsername(username));
     }
 
     @GetMapping("/get-ById/{id}")
-    public ResponseEntity<User> getById(@PathVariable Long id) {
+    public ResponseEntity<UserDto> getById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getById(id));
     }
 
