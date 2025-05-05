@@ -1,16 +1,20 @@
 package com.example.project.service.impl;
 
 import com.example.project.dto.AuthDto;
+import com.example.project.dto.ProfileDto;
 import com.example.project.dto.UpdateUserDto;
 import com.example.project.entity.*;
 import com.example.project.enumName.RoleName;
 import com.example.project.enumName.StatusName;
 import com.example.project.exception.ex.BANNED;
+import com.example.project.mappers.ProfileMapper;
 import com.example.project.repo.UserRepository;
 import com.example.project.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -22,6 +26,7 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
 
     private UserRepository repo;
+    private ProfileMapper profileMapper;
     private PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository repo) {
@@ -33,13 +38,17 @@ public class UserServiceImpl implements UserService {
         User us = new User
                 (
                     user.username(),
-                    new Password(passwordEncoder.encode(user.password())),
-                    new Status(StatusName.UNBANNED),
-                    Set.of(new Role(RoleName.USER)),
-                    new Profile(user.username())
+                    passwordEncoder.encode(user.password()),
+                    StatusName.UNBANNED,
+                    Set.of(new Role(RoleName.USER))
                 );
 
         repo.save(us);
+    }
+
+    @Override
+    public void createProfile(ProfileDto profile) {
+     getCurrentUser().addProfile(profileMapper.toProfile(profile));
     }
 
     @Override
@@ -69,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void checkStatus(User user) {
-        if(user.getStatus().getStatusName().equals(StatusName.BANNED))
+        if(user.getStatus().equals(StatusName.BANNED))
             throw new BANNED("BANNED");
     }
 
@@ -95,7 +104,7 @@ public class UserServiceImpl implements UserService {
     private void updatePassword(User exist, UpdateUserDto userDto) {
         userDto.password()
                 .filter(s -> !s.trim().isEmpty())
-                .ifPresent(u -> exist.setPassword(new Password(u)));
+                .ifPresent(u -> exist.setPassword(passwordEncoder.encode(u)));
     }
 
     @Override
@@ -103,6 +112,9 @@ public class UserServiceImpl implements UserService {
 
     }
 
-
+    private User getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return (User) auth.getPrincipal();
+    }
 
 }

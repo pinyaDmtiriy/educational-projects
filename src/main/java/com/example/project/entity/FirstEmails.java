@@ -1,34 +1,35 @@
 package com.example.project.entity;
 
-import com.example.project.enumName.StatusName;
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table
-@Getter
-@Setter
+@Table(name = "emails")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Status {
+@Getter
+@Setter
+public class FirstEmails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id")
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private StatusName statusName;
+    @Email
+    @Column(name = "email")
+    private String email;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Status(StatusName statusName) {
-        this.statusName = statusName;
+    public FirstEmails(String email) {
+        this.email = email;
     }
 }

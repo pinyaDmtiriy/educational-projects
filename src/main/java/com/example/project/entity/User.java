@@ -1,5 +1,6 @@
 package com.example.project.entity;
 
+import com.example.project.enumName.StatusName;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
-@Table
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,16 +24,21 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "username", unique = true)
     private String username;
 
-    @OneToOne(mappedBy = "user")
-    private Password password;
+    @Column(name = "password")
+    private String password;
 
     @OneToOne(mappedBy = "user")
-    private Status status;
+    private FirstEmails firstEmail;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StatusName status;
 
     @ManyToMany
     @JoinTable
@@ -43,7 +49,7 @@ public class User implements UserDetails {
             )
     private Set<Role> roles = new HashSet<>();
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", optional = true)
     private Profile profile;
 
     @Override
@@ -53,12 +59,16 @@ public class User implements UserDetails {
                 .collect(Collectors.toSet());
     }
 
-    public User(String username, Password password, Status status, Set<Role> roles, Profile profile) {
+    public User(String username, String password, StatusName status, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.status = status;
         this.roles = roles;
-        this.profile = profile;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
 
     public void addProfile(Profile profile) {

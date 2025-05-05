@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table
+@Table(name = "roles")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -20,7 +20,7 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id")
     private Long id;
 
     @Enumerated(EnumType.STRING)

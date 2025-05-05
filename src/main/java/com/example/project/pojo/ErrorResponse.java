@@ -1,4 +1,4 @@
-package com.example.project.dto;
+package com.example.project.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

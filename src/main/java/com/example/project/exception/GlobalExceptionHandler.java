@@ -1,6 +1,6 @@
 package com.example.project.exception;
 
-import com.example.project.dto.ErrorResponse;
+import com.example.project.pojo.ErrorResponse;
 import com.example.project.exception.ex.BANNED;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

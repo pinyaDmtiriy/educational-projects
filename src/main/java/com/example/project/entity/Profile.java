@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table
+@Table(name = "profiles")
 @Setter
 @Getter
 @AllArgsConstructor
@@ -13,17 +13,26 @@ public class Profile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "firstName")
+    private String firstName;
+
+    @Column(name = "lastName")
+    private String lastName;
+
+    @Column(name = "description")
+    private String description;
 
     @OneToOne
     @JoinColumn(name = "user_id", unique = true)
     private User user;
 
-    public Profile(String name) {
-        this.name = name;
+    public Profile(String firstName, String lastName, String description) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.description = description;
     }
+
 }
