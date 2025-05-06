@@ -13,7 +13,7 @@ public interface UserService {
     UserDto getById(Long id);
     UserDto getByUsername(String username);
     Page<UserDto> getPage(Pageable pageable);
-    void updateUserByUsername(String username, UpdateUserDto userDto);
+    void updateUser(UpdateUserDto userDto);
     void updateProfileByUsername(String username, UpdateProfileDto updateProfileDto);
 
     User byUsername(String username);

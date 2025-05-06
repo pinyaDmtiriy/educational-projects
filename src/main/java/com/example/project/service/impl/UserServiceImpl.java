@@ -1,38 +1,35 @@
 package com.example.project.service.impl;
 
-import com.example.project.dto.*;
-import com.example.project.entity.*;
-import com.example.project.enumName.RoleName;
+import com.example.project.dto.RegistrationUserDto;
+import com.example.project.dto.UpdateProfileDto;
+import com.example.project.dto.UpdateUserDto;
+import com.example.project.dto.UserDto;
+import com.example.project.entity.User;
 import com.example.project.enumName.StatusName;
 import com.example.project.exception.ex.BANNED;
-import com.example.project.mappers.EmailMapper;
-import com.example.project.mappers.ProfileMapper;
-import com.example.project.repo.UserRepository;
 import com.example.project.service.UserService;
 import com.example.project.service.crud.create.CreateService;
 import com.example.project.service.crud.delete.DeleteService;
 import com.example.project.service.crud.read.ReadService;
 import com.example.project.service.crud.update.UpdateService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    CreateService createService;
-    DeleteService deleteService;
-    ReadService readService;
-    UpdateService updateService;
+    private CreateService createService;
+    private DeleteService deleteService;
+    private ReadService readService;
+    private UpdateService updateService;
 
+    public UserServiceImpl(CreateService createService, DeleteService deleteService, ReadService readService, UpdateService updateService) {
+        this.createService = createService;
+        this.deleteService = deleteService;
+        this.readService = readService;
+        this.updateService = updateService;
+    }
 
     @Override
     public void create(RegistrationUserDto user) {
@@ -70,8 +67,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserByUsername(String username, UpdateUserDto userDto) {
-        updateService.updateUserByUsername(username,userDto);
+    public void updateUser(UpdateUserDto userDto) {
+        updateService.updateUser(userDto);
     }
 
     @Override

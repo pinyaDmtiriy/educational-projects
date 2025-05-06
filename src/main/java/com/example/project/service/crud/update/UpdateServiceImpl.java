@@ -21,12 +21,17 @@ public class UpdateServiceImpl implements UpdateService{
     private PasswordEncoder passwordEncoder;
     private UserRepository userRepository;
     private EmailMapper emailMapper;
-    private ProfileRepository profileRepository;
 
-//    USER
+    public UpdateServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository, EmailMapper emailMapper) {
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+        this.emailMapper = emailMapper;
+    }
+
+    //    USER
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void updateUserByUsername(String username, UpdateUserDto userDto) {
+    public void updateUser(UpdateUserDto userDto) {
         User exist = getCurrentUserAndCheck();
 
         updateUsername(exist,userDto);
@@ -59,28 +64,39 @@ public class UpdateServiceImpl implements UpdateService{
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void updateProfileByUsername(String username, UpdateProfileDto updateProfileDto) {
         User exist = getCurrentUserAndCheck();
+        Profile profile = exist.getProfile();
 
-        if(exist.getProfile() != null) {
-            profileRepository.deleteByFirstName(exist.getProfile().getFirstName());
-        }
+        checkProfile(exist.getProfile());
 
-        String newFirstName = updateFirstName(updateProfileDto.firstName());
-        String newLastName = updateLastName(updateLastName(updateProfileDto.lastName()));
-        String description = updateDescription(updateProfileDto.description());
-
-        exist.addProfile(new Profile(newFirstName,newLastName,description));
+        updateFirstName(profile, updateProfileDto.firstName());
+        updateLastName(profile, updateProfileDto.lastName());
+        updateDescription(profile, updateProfileDto.description());
 
         userRepository.save(exist);
     }
 
-    private String updateFirstName(String n) {
-        return n != null ? n : "UNKNOW";
+    private void updateFirstName(Profile profile,String n) {
+        if(n != null && !n.trim().isEmpty()) {
+            profile.setFirstName(n);
+        }
     }
-    private String updateLastName(String n) {
-        return n != null ? n : "UNKNOW";
+
+    private void updateLastName(Profile profile, String n) {
+        if(n != null && !n.trim().isEmpty()) {
+            profile.setLastName(n);
+        }
     }
-    private String updateDescription(String n) {
-        return n != null ? n : "UNKNOW";
+
+    private void updateDescription(Profile profile, String n) {
+        if(n != null && !n.trim().isEmpty()) {
+            profile.setDescription(n);
+        }
+    }
+
+    private void checkProfile(Profile profile) {
+        if(profile == null) {
+            throw new EntityNotFoundException("profile doesn't exist");
+        }
     }
 
     /*---------------------------------------------------------------------------------------------------------------------*/

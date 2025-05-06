@@ -46,14 +46,13 @@ public class UserController {
         return ResponseEntity.ok(userService.getById(id));
     }
 
-    @PostMapping("/updateUser-ByUsername/{username}")
-    public ResponseEntity<Void> updateUserByUsername
+    @PostMapping("/updateUser")
+    public ResponseEntity<Void> updateUser
             (
-                    @PathVariable String username,
                     @RequestBody UpdateUserDto user
             )
     {
-        userService.updateUserByUsername(username, user);
+        userService.updateUser(user);
         return ResponseEntity.ok().build();
     }
 
