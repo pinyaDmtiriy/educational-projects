@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserService {
     void create(RegistrationUserDto user);
-    void createProfile(RegistrationUserDto profile);
+    void createProfile(RegistrationProfileDto profile);
     void deleteById(Long id);
     void deleteByUsername(String username);
     UserDto getById(Long id);

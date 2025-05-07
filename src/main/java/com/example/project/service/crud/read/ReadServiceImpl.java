@@ -15,6 +15,11 @@ public class ReadServiceImpl implements ReadService{
     private UserRepository userRepository;
     private UserMapper userMapper;
 
+    public ReadServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+    }
+
     @Override
     public UserDto getById(Long id) {
         return userMapper.toDto(userRepository.findById(id).orElseThrow(EntityNotFoundException::new));

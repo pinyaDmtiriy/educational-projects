@@ -5,9 +5,9 @@ import com.example.project.dto.UpdateUserDto;
 import com.example.project.entity.Profile;
 import com.example.project.entity.User;
 import com.example.project.mappers.EmailMapper;
-import com.example.project.repo.ProfileRepository;
 import com.example.project.repo.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +22,7 @@ public class UpdateServiceImpl implements UpdateService{
     private UserRepository userRepository;
     private EmailMapper emailMapper;
 
-    public UpdateServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository, EmailMapper emailMapper) {
+    public UpdateServiceImpl(@Lazy PasswordEncoder passwordEncoder, UserRepository userRepository, EmailMapper emailMapper) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.emailMapper = emailMapper;

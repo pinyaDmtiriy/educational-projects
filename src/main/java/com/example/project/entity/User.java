@@ -33,14 +33,14 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private FirstEmails firstEmail;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private StatusName status;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable
             (
                     name = "user_role",

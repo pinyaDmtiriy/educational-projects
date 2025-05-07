@@ -1,5 +1,6 @@
 package com.example.project.service.crud.create;
 
+import com.example.project.dto.RegistrationProfileDto;
 import com.example.project.dto.RegistrationUserDto;
 import com.example.project.entity.Role;
 import com.example.project.entity.User;
@@ -42,7 +43,7 @@ public class CreateServiceImpl implements CreateService{
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void createProfile(RegistrationUserDto profile) {
+    public void createProfile(RegistrationProfileDto profile) {
         User user = getCurrentUser();
         user.addProfile(profileMapper.toProfile(profile));
 

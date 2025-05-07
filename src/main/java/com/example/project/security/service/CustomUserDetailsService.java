@@ -1,6 +1,7 @@
 package com.example.project.security.service;
 
 import com.example.project.service.UserService;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,9 +1,6 @@
 package com.example.project.service.impl;
 
-import com.example.project.dto.RegistrationUserDto;
-import com.example.project.dto.UpdateProfileDto;
-import com.example.project.dto.UpdateUserDto;
-import com.example.project.dto.UserDto;
+import com.example.project.dto.*;
 import com.example.project.entity.User;
 import com.example.project.enumName.StatusName;
 import com.example.project.exception.ex.BANNED;
@@ -37,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createProfile(RegistrationUserDto profile) {
+    public void createProfile(RegistrationProfileDto profile) {
         createService.createProfile(profile);
     }
 
