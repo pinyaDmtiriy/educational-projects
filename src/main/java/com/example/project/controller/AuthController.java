@@ -5,10 +5,7 @@ import com.example.project.dto.RegistrationUserDto;
 import com.example.project.pojo.JwtResponse;
 import com.example.project.service.auth.AuthenticationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
