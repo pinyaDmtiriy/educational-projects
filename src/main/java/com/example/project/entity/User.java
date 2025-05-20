@@ -33,14 +33,14 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private FirstEmails firstEmail;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private StatusName status;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable
             (
                     name = "user_role",
@@ -49,7 +49,7 @@ public class User implements UserDetails {
             )
     private Set<Role> roles = new HashSet<>();
 
-    @OneToOne(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Profile profile;
 
     @Override
@@ -57,6 +57,15 @@ public class User implements UserDetails {
         return roles.stream()
                 .map(Role::getRoleName)
                 .collect(Collectors.toSet());
+    }
+
+    public User(Long id, String username, String password, FirstEmails firstEmail, StatusName status, Set<Role> roles) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.firstEmail = firstEmail;
+        this.status = status;
+        this.roles = roles;
     }
 
     public User(String username, String password, FirstEmails firstEmail) {

@@ -38,7 +38,7 @@ public class UserMapperUtil {
             return null;
         }
         return roles.stream()
-                .map(String::valueOf)
+                .map(role -> role.getRoleName().name())
                 .collect(Collectors.toSet());
     }
 }

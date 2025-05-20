@@ -4,8 +4,10 @@ import com.example.project.dto.RegistrationUserDto;
 import com.example.project.dto.UserDto;
 import com.example.project.entity.User;
 import com.example.project.mappers.util.UserMapperUtil;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
@@ -19,11 +21,19 @@ public interface UserMapper {
     @Mapping(source = "password", target = "password", qualifiedByName = "coderPassword")
     User toUser(RegistrationUserDto userDto);
 
+    @AfterMapping
+    default void linkUserAndFirstEmail(@MappingTarget User user) {
+        if (user.getFirstEmail() != null) {
+            user.getFirstEmail().setUser(user);
+        }
+    }
+
     @Mapping(source = "username", target = "username")
     @Mapping(source = "roles", target = "roles", qualifiedByName = "setRoleToSetString")
     UserDto toDto(User user);
 
     default Page<UserDto> toPageDto(Page<User> page) {
+
         List<UserDto> userDto = page.getContent().stream()
                 .map(this::toDto)
                 .toList();

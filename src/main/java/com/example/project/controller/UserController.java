@@ -3,12 +3,12 @@ package com.example.project.controller;
 import com.example.project.dto.UpdateUserDto;
 import com.example.project.dto.UserDto;
 import org.springframework.data.domain.Page;
-import com.example.project.entity.User;
 import com.example.project.service.UserService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +23,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<Page<UserDto>> getUsers
             (

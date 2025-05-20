@@ -37,6 +37,8 @@ public class UpdateServiceImpl implements UpdateService{
         updateUsername(exist,userDto);
         updatePassword(exist,userDto);
         updateEmail(exist,userDto);
+
+        userRepository.update(exist, exist.getId());
     }
 
 
@@ -72,7 +74,7 @@ public class UpdateServiceImpl implements UpdateService{
         updateLastName(profile, updateProfileDto.lastName());
         updateDescription(profile, updateProfileDto.description());
 
-        userRepository.save(exist);
+        userRepository.updateProfile(exist.getProfile(), exist.getId());
     }
 
     private void updateFirstName(Profile profile,String n) {

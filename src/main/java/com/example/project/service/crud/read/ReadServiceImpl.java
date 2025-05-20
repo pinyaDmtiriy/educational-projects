@@ -4,7 +4,6 @@ import com.example.project.dto.UserDto;
 import com.example.project.entity.User;
 import com.example.project.mappers.UserMapper;
 import com.example.project.repo.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,7 @@ public class ReadServiceImpl implements ReadService{
 
     @Override
     public UserDto getById(Long id) {
-        return userMapper.toDto(userRepository.findById(id).orElseThrow(EntityNotFoundException::new));
+        return userMapper.toDto(userRepository.findById(id));
     }
 
     @Override
@@ -37,6 +36,6 @@ public class ReadServiceImpl implements ReadService{
 
     @Override
     public Page<UserDto> getPage(Pageable pageable) {
-        return userMapper.toPageDto(userRepository.findAll(pageable));
+        return userRepository.getPage(pageable);
     }
 }

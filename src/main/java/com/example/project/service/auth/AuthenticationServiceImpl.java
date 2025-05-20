@@ -31,16 +31,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public JwtResponse login(AuthDto dto) {
-        System.out.println("stack");
         Authentication auth = authentication.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.username(), dto.password()));
 
-        System.out.println("stack1");
         User user = (User) auth.getPrincipal();
 
-        System.out.println("stack2");
         userService.checkStatus(user);
-        System.out.println("stack3");
 
         return JwtResponse.login(jwtUtil.generateToken(user), user);
     }
