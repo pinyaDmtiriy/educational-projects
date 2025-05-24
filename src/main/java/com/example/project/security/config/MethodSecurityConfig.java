@@ -8,10 +8,10 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
 @Configuration
-@EnableMethodSecurity
-public class MethodSecurityConfig {
+@EnableMethodSecurity(prePostEnabled = true)
+public class MethodSecurityConfig{
 
-    RoleHierarchy roleHierarchy;
+    private RoleHierarchy roleHierarchy;
 
     public MethodSecurityConfig(RoleHierarchy roleHierarchy) {
         this.roleHierarchy = roleHierarchy;

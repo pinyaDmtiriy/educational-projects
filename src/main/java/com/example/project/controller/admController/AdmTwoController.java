@@ -6,6 +6,7 @@ import com.example.project.service.adm.two.AdmTwoService;
 import com.example.project.validation.annotations.Username;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/adm_two")
 @PreAuthorize("hasRole('ADMIN_TWO')")
 @Validated
+@Slf4j
 public class AdmTwoController {
 
     private AdmTwoService admTwoService;
@@ -32,7 +34,8 @@ public class AdmTwoController {
                     @PathVariable
                     String username
             ) {
-      return ResponseEntity.ok(admTwoService.ban(username));
+        log.info("Обращение к endpoint /api/adm_two/ban/username/{}", username);
+        return ResponseEntity.ok(admTwoService.ban(username));
     }
 
     @PostMapping("/ban/id/{id}")
@@ -42,7 +45,8 @@ public class AdmTwoController {
                     @PathVariable
                     Long id
             ) {
-       return ResponseEntity.ok(admTwoService.ban(id));
+        log.info("Обращение к endpoint /api/adm_two/ban/id/{}", id);
+        return ResponseEntity.ok(admTwoService.ban(id));
     }
 
     @PostMapping("/unban/username/{username}")
@@ -53,7 +57,8 @@ public class AdmTwoController {
                     @PathVariable
                     String username
             ) {
-          return ResponseEntity.ok(admTwoService.unban(username));
+        log.info("Обращение к endpoint /api/adm_two/unban/username/{}", username);
+        return ResponseEntity.ok(admTwoService.unban(username));
     }
 
     @PostMapping("/unban/id/{id}")
@@ -63,7 +68,8 @@ public class AdmTwoController {
                     @PathVariable
                     Long id
             ) {
-       return ResponseEntity.ok(admTwoService.unban(id));
+        log.info("Обращение к endpoint /api/adm_two/unban/id/{}", id);
+        return ResponseEntity.ok(admTwoService.unban(id));
     }
 
     @PutMapping("/updateUser")
@@ -73,6 +79,7 @@ public class AdmTwoController {
                     @RequestBody
                     UpdateUserDto userDto
             ) {
+        log.info("Обращение к endpoint /api/adm_two/updateUser");
         return ResponseEntity.ok(admTwoService.updateUser(userDto));
     }
 

@@ -37,9 +37,9 @@ public class AdmUserRepositoryImpl implements AdmUserRepository{
                     (
                             res.getLong("id"),
                             res.getString("username"),
-                            res.getString("accountStatus"),
+                            res.getString("status"),
                             res.getString("email"),
-                            List.of(res.getString("roles")),
+                            List.of(res.getString("role")),
                             res.getString("first_name"),
                             res.getString("last_name"),
                             res.getString("description")

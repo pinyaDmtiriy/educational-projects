@@ -7,14 +7,11 @@ import com.example.project.security.service.CustomUserDetailsService;
 import com.example.project.service.redis.LoginAttemptServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.hierarchicalroles.NullRoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -23,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 
 @Configuration
 @EnableWebSecurity
@@ -45,6 +43,7 @@ public class SecurityConfiguration {
                         req
                                 .requestMatchers("api/auth/login").permitAll()
                                 .requestMatchers("api/auth/registration").permitAll()
+                                .requestMatchers("/error").permitAll()
                                 .anyRequest().authenticated());
 
         return http.build();
@@ -70,8 +69,7 @@ public class SecurityConfiguration {
 
     @Bean
     public RoleHierarchy roleHierarchy() {
-        String hierarchy = "ROLE_USER < ROLE_ADMIN_ONE \n ROLE_ADMIN_ONE < ROLE_ADMIN_TWO \n ROLE_ADMIN_TWO < ROLE_ADMIN_THREE";
+        String hierarchy = "ROLE_ADMIN_THREE > ROLE_ADMIN_TWO > ROLE_ADMIN_ONE > ROLE_USER";
     return RoleHierarchyImpl.fromHierarchy(hierarchy);
     }
-
 }

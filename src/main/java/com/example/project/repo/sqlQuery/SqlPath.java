@@ -30,11 +30,10 @@ public enum SqlPath {
     // DELETE
 
     DELETE_USER_BY_ID("sqlQuery/delete_user_by_id.sql"),
-    DELETE_USER_BY_USERNAME("sqlQuery/delete_user_by_username.sql"),
+    DELETE_USER_BY_USERNAME("sqlQuery/deete_user_by_username.sql"),
 
     // PAGE
 
-    GET_PAGE_USERDTO("sqlQuery/get_page_userDto.sql"),
     GET_PAGE_ADM_USER_RESPONSE("sqlQuery/adm/get_page_adm_user_response.sql"),
 
     // ADM

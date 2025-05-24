@@ -8,6 +8,7 @@ import com.example.project.entity.User;
 import com.example.project.enumName.RoleName;
 import com.example.project.enumName.StatusName;
 import com.example.project.repo.UserRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -21,7 +22,7 @@ public class CreateServiceImpl implements CreateService{
     public UserRepository userRepository;
     public PasswordEncoder passwordEncoder;
 
-    public CreateServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public CreateServiceImpl(UserRepository userRepository,@Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }

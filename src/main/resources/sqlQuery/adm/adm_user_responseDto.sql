@@ -12,5 +12,4 @@ join
 join
     emails e on e.user_id = u.id
 left join profiles p on p.user_id = u.id
-order by
 where u.username = ?;
