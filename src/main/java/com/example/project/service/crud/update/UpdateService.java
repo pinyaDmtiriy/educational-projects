@@ -1,9 +1,8 @@
 package com.example.project.service.crud.update;
 
-import com.example.project.dto.UpdateProfileDto;
-import com.example.project.dto.UpdateUserDto;
+import com.example.project.dto.responseDto.user.UpdateUserDto;
+import com.example.project.entity.User;
 
 public interface UpdateService {
-    void updateUser(UpdateUserDto userDto);
-    void updateProfileByUsername(String username, UpdateProfileDto updateProfileDto);
+    void updateUser(UpdateUserDto userDto, User current);
 }

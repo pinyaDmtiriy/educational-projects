@@ -1,17 +1,14 @@
 package com.example.project.service.crud.create;
 
-import com.example.project.dto.RegistrationProfileDto;
-import com.example.project.dto.RegistrationUserDto;
+import com.example.project.dto.responseDto.auth.RegistrationDto;
+import com.example.project.entity.FirstEmails;
+import com.example.project.entity.Profile;
 import com.example.project.entity.Role;
 import com.example.project.entity.User;
 import com.example.project.enumName.RoleName;
 import com.example.project.enumName.StatusName;
-import com.example.project.mappers.ProfileMapper;
-import com.example.project.mappers.UserMapper;
-import com.example.project.repo.RoleRepository;
 import com.example.project.repo.UserRepository;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,41 +19,37 @@ import java.util.Set;
 public class CreateServiceImpl implements CreateService{
 
     public UserRepository userRepository;
-    public UserMapper userMapper;
-    public RoleRepository roleRepository;
-    public ProfileMapper profileMapper;
+    public PasswordEncoder passwordEncoder;
 
-    public CreateServiceImpl(UserRepository userRepository, UserMapper userMapper, RoleRepository roleRepository, ProfileMapper profileMapper) {
+    public CreateServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
-        this.roleRepository = roleRepository;
-        this.profileMapper = profileMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void create(RegistrationUserDto dto) {
-        User user = userMapper.toUser(dto);
+    public void create(RegistrationDto dto) {
+        User user = new User();
+        FirstEmails email = new FirstEmails();
+        Profile profile = new Profile();
+
+        Set<Role> roles = Set.of(new Role(RoleName.ROLE_USER));
+
+        profile.setFirstName(dto.first_name());
+        profile.setLastName(dto.last_name());
+        profile.setDescription(dto.description());
+
+        email.setEmail(dto.email());
+
+        user.setUsername(dto.username());
+        user.setPassword(passwordEncoder.encode(dto.password()));
+        user.addFirstEmail(email);
+        user.addProfile(profile);
+
         user.setStatus(StatusName.UNBANNED);
+        user.setRoles(roles);
 
         userRepository.create(user);
     }
 
-    @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void createProfile(RegistrationProfileDto profile) {
-        User user = getCurrentUser();
-        user.addProfile(profileMapper.toProfile(profile));
-
-        userRepository.createProfile(user.getProfile(),user.getId());
-    }
-
-    private User getCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return (User) auth.getPrincipal();
-    }
-
-    private Role getRole(RoleName roleName) {
-        return roleRepository.findByRoleName(roleName);
-    }
 }

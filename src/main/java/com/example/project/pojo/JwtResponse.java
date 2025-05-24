@@ -23,12 +23,16 @@ public class JwtResponse {
     }
 
     public static JwtResponse login(String token, User user) {
+        List<String> roles = user.getRoles().stream()
+                .map(role -> role.getRoleName().name())
+                .toList();
+
         return new JwtResponse
                 (
                         token,
                         "Bearer",
                         user.getUsername(),
-                        user.getRoles().stream().map(role -> role.getRoleName().name()).toList(),
+                        roles,
                         "1 hour"
                 );
     }

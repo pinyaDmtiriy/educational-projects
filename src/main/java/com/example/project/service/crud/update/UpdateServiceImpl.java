@@ -1,15 +1,11 @@
 package com.example.project.service.crud.update;
 
-import com.example.project.dto.UpdateProfileDto;
-import com.example.project.dto.UpdateUserDto;
+import com.example.project.dto.responseDto.user.UpdateUserDto;
 import com.example.project.entity.Profile;
 import com.example.project.entity.User;
 import com.example.project.mappers.EmailMapper;
 import com.example.project.repo.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -28,17 +24,18 @@ public class UpdateServiceImpl implements UpdateService{
         this.emailMapper = emailMapper;
     }
 
-    //    USER
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void updateUser(UpdateUserDto userDto) {
-        User exist = getCurrentUserAndCheck();
+    public void updateUser(UpdateUserDto userDto, User current) {
 
-        updateUsername(exist,userDto);
-        updatePassword(exist,userDto);
-        updateEmail(exist,userDto);
+        updateUsername(current,userDto);
+        updatePassword(current,userDto);
+        updateEmail(current,userDto);
+        updateFirstName(current,userDto, current.getProfile());
+        updateLastName(current,userDto, current.getProfile());
+        updateDescription(current,userDto, current.getProfile());
 
-        userRepository.update(exist, exist.getId());
+        userRepository.update(current);
     }
 
 
@@ -55,66 +52,27 @@ public class UpdateServiceImpl implements UpdateService{
     }
 
     private void updateEmail(User exist, UpdateUserDto userDto) {
-        if(userDto.firstEmail() != null && !userDto.firstEmail().trim().isEmpty()) {
+        if(userDto.email() != null && !userDto.email().trim().isEmpty()) {
             exist.addFirstEmail(emailMapper.toFirstEmails(userDto));
         }
     }
 
-    /*---------------------------------------------------------------------------------------------------------------------*/
-//    PROFILE
-    @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void updateProfileByUsername(String username, UpdateProfileDto updateProfileDto) {
-        User exist = getCurrentUserAndCheck();
-        Profile profile = exist.getProfile();
-
-        checkProfile(exist.getProfile());
-
-        updateFirstName(profile, updateProfileDto.firstName());
-        updateLastName(profile, updateProfileDto.lastName());
-        updateDescription(profile, updateProfileDto.description());
-
-        userRepository.updateProfile(exist.getProfile(), exist.getId());
-    }
-
-    private void updateFirstName(Profile profile,String n) {
-        if(n != null && !n.trim().isEmpty()) {
-            profile.setFirstName(n);
+    public void updateFirstName(User exist, UpdateUserDto userDto, Profile profile) {
+        if(userDto.first_name() != null && !userDto.first_name().trim().isEmpty()) {
+            profile.setFirstName(userDto.first_name());
         }
     }
 
-    private void updateLastName(Profile profile, String n) {
-        if(n != null && !n.trim().isEmpty()) {
-            profile.setLastName(n);
+   public void updateLastName(User exist, UpdateUserDto userDto, Profile profile) {
+        if(userDto.last_name() != null && !userDto.last_name().trim().isEmpty()) {
+            profile.setLastName(userDto.last_name());
         }
     }
 
-    private void updateDescription(Profile profile, String n) {
-        if(n != null && !n.trim().isEmpty()) {
-            profile.setDescription(n);
+    public void updateDescription(User exist, UpdateUserDto userDto, Profile profile) {
+        if(userDto.description() != null && !userDto.description().trim().isEmpty()) {
+            profile.setDescription(userDto.description());
         }
     }
 
-    private void checkProfile(Profile profile) {
-        if(profile == null) {
-            throw new EntityNotFoundException("profile doesn't exist");
-        }
-    }
-
-    /*---------------------------------------------------------------------------------------------------------------------*/
-//    ОБЩИЕ МЕТОДЫ
-
-    private User getCurrentUserAndCheck() {
-        User exist = getCurrentUser();
-        if(exist == null) {
-            throw new EntityNotFoundException();
-        }
-        return exist;
-    }
-
-
-    private User getCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return (User) auth.getPrincipal();
-    }
 }

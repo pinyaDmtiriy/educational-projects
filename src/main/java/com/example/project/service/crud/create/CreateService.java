@@ -1,9 +1,7 @@
 package com.example.project.service.crud.create;
 
-import com.example.project.dto.RegistrationProfileDto;
-import com.example.project.dto.RegistrationUserDto;
+import com.example.project.dto.responseDto.auth.RegistrationDto;
 
 public interface CreateService {
-    void create(RegistrationUserDto user);
-    void createProfile(RegistrationProfileDto profile);
+    void create(RegistrationDto user);
 }

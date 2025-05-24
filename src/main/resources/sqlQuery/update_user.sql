@@ -5,12 +5,14 @@ set username = ?, password = ?
 where id = ?
 returning id
 ),
-delete_old_email as(
-    delete from emails
-    where user_id = (select id from update_user)
-),
 update_email as(
-insert into emails(email, user_id)
-select ?, id from update_user
+update emails
+set email = ?
+where user_id = (select id from update_user)
+),
+update_profile as(
+update profiles
+set first_name = ?, last_name = ?, description = ?
+where user_id = (select id from update_user)
 )
 select id from update_user;

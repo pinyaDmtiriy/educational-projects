@@ -1,16 +1,20 @@
 package com.example.project.service.impl;
 
-import com.example.project.dto.*;
+import com.example.project.dto.responseDto.auth.RegistrationDto;
+import com.example.project.dto.responseDto.user.ResponseMessage;
+import com.example.project.dto.responseDto.user.UpdateUserDto;
+import com.example.project.dto.responseDto.user.UserResponseDto;
 import com.example.project.entity.User;
 import com.example.project.enumName.StatusName;
 import com.example.project.exception.ex.BANNED;
+import com.example.project.pojo.ResponseBuilder;
 import com.example.project.service.UserService;
 import com.example.project.service.crud.create.CreateService;
 import com.example.project.service.crud.delete.DeleteService;
 import com.example.project.service.crud.read.ReadService;
 import com.example.project.service.crud.update.UpdateService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,59 +33,49 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void create(RegistrationUserDto user) {
+    public ResponseMessage create(RegistrationDto user) {
         createService.create(user);
+        return ResponseBuilder.responseMessage("registration succesful");
     }
 
     @Override
-    public void createProfile(RegistrationProfileDto profile) {
-        createService.createProfile(profile);
+    public void delete() {
+        User user = getCurrentUser();
+        checkStatus(user);
+
+        deleteService.delete(user.getId());
     }
 
     @Override
-    public void deleteById(Long id) {
-        deleteService.deleteById(id);
+    public ResponseMessage update(UpdateUserDto userDto) {
+        User user = getCurrentUser();
+        checkStatus(user);
+        updateService.updateUser(userDto, user);
+
+        return ResponseBuilder.responseMessage("data update!");
     }
 
     @Override
-    public void deleteByUsername(String username) {
-        deleteService.deleteByUsername(username);
+    public UserResponseDto read() {
+        User user = getCurrentUser();
+        checkStatus(user);
+
+        return readService.read(user);
     }
 
-    @Override
-    public UserDto getById(Long id) {
-        return readService.getById(id);
-    }
 
-    @Override
-    public UserDto getByUsername(String username) {
-        return readService.getByUsername(username);
-    }
-
-    @Override
-    public Page<UserDto> getPage(Pageable pageable) {
-        return readService.getPage(pageable);
-    }
-
-    @Override
-    public void updateUser(UpdateUserDto userDto) {
-        updateService.updateUser(userDto);
-    }
-
-    @Override
-    public void updateProfileByUsername(String username, UpdateProfileDto updateProfileDto) {
-        updateService.updateProfileByUsername(username,updateProfileDto);
-    }
-
-    @Override
-    public User byUsername(String username) {
-        return readService.ByUsername(username);
-    }
-
-    @Override
     public void checkStatus(User user) {
         if(user.getStatus().equals(StatusName.BANNED)) {
             throw new BANNED("BANNED");
         }
     }
+
+    private User getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth != null && auth.isAuthenticated() && auth.getPrincipal() instanceof User)) {
+            throw new IllegalStateException("Current user is not properly authenticated");
+        }
+        return (User) auth.getPrincipal();
+    }
+
 }

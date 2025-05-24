@@ -1,15 +1,13 @@
-package com.example.project.dto;
+package com.example.project.dto.responseDto.auth;
 
 import com.example.project.validation.annotations.Password;
 import com.example.project.validation.annotations.Username;
 
-public record RegistrationUserDto
+public record AuthDto
         (
-                @Username
+                @Username(allowEmpty = false)
                 String username,
-                @Username
-                String firstEmail,
-                @Password
+                @Password(allowEmpty = false)
                 String password
         )
 {

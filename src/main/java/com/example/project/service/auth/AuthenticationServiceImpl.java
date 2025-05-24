@@ -1,7 +1,8 @@
 package com.example.project.service.auth;
 
-import com.example.project.dto.AuthDto;
-import com.example.project.dto.RegistrationUserDto;
+import com.example.project.dto.responseDto.auth.AuthDto;
+import com.example.project.dto.responseDto.auth.RegistrationDto;
+import com.example.project.dto.responseDto.user.ResponseMessage;
 import com.example.project.entity.User;
 import com.example.project.pojo.JwtResponse;
 import com.example.project.security.util.JwtUtil;
@@ -25,8 +26,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void registration(RegistrationUserDto user) {
-        userService.create(user);
+    public ResponseMessage registration(RegistrationDto user) {
+       return userService.create(user);
     }
 
     @Override

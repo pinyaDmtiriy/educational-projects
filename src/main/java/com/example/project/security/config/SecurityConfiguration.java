@@ -7,6 +7,9 @@ import com.example.project.security.service.CustomUserDetailsService;
 import com.example.project.service.redis.LoginAttemptServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.NullRoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -23,7 +26,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 
     private JwtFilter jwtFilter;
@@ -66,5 +68,10 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        String hierarchy = "ROLE_USER < ROLE_ADMIN_ONE \n ROLE_ADMIN_ONE < ROLE_ADMIN_TWO \n ROLE_ADMIN_TWO < ROLE_ADMIN_THREE";
+    return RoleHierarchyImpl.fromHierarchy(hierarchy);
+    }
 
 }

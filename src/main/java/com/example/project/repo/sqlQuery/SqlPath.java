@@ -3,15 +3,24 @@ package com.example.project.repo.sqlQuery;
 import java.nio.file.Path;
 
 public enum SqlPath {
+
+    // USER
+
+    GET_USER_RESPONSE("sqlQuery/get_user_response.sql"),
+
+
     // CREATE
 
+    @Deprecated(since = "устарело")
     CREATE_USER_REGISTRATIONDTO("sqlQuery/create_user_registrationDto.sql"),
+    @Deprecated(since = "устарело")
     CREATE_PROFILE_REGISTRATIONPROFILEDTO("sqlQuery/create_profile_registrationProfileDto.sql"),
+
+    CREATE_USER_REGISTRATION_DTO("sqlQuery/user_registrationDto.sql"),
 
     // UPDATE
 
     UPDATE_USER("sqlQuery/update_user.sql"),
-    UPDATE_PROFILE("sqlQuery/update_profile.sql"),
 
     // FIND
 
@@ -25,7 +34,22 @@ public enum SqlPath {
 
     // PAGE
 
-    GET_PAGE_USERDTO("sqlQuery/get_page_userDto.sql");
+    GET_PAGE_USERDTO("sqlQuery/get_page_userDto.sql"),
+    GET_PAGE_ADM_USER_RESPONSE("sqlQuery/adm/get_page_adm_user_response.sql"),
+
+    // ADM
+    UPDATE_USER_ROLE("sqlQuery/adm/update_user_role.sql"),
+    UPDATE_ROLE_RESPONSE_DTO("sqlQuery/adm/adm_update_role_responseDto.sql"),
+
+    BAN_BY_USERNAME("sqlQuery/adm/ban_by_username.sql"),
+    BAN_BY_ID("sqlQuery/adm/ban_by_id.sql"),
+    UNBAN_BY_USERNAME("sqlQuery/adm/unban_by_username.sql"),
+    UNBAN_BY_ID("sqlQuery/adm/unban_by_id.sql"),
+
+    ADM_FIND_USER_RESPONSE_DTO("sqlQuery/adm/adm_user_responseDto.sql");
+
+
+
 
     private String resourcePath;
 
