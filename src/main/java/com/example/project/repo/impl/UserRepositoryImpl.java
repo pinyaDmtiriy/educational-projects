@@ -39,8 +39,6 @@ public class UserRepositoryImpl implements UserRepository {
     public User findByUsername(String username) {
         log.debug("Вызван UserRepository.findByUsername()");
 
-        try {
-
             log.debug("загрузка sql");
             String sql = sqlLoader.load(SqlPath.FIND_USER_BY_USERNAME.toPath());
             log.debug("sql загружен успешно!");
@@ -58,17 +56,12 @@ public class UserRepositoryImpl implements UserRepository {
                     ));
             log.info("Возвращаем user - аунтефицирован");
             return user;
-        }catch (EmptyResultDataAccessException e) {
-            log.error("Произошла ошибка при попытке загрузить пользователя из бд");
-            throw new EntityNotFoundException("User with username: " + username + " not found");
-        }
     }
 
     @Override
     public User findById(Long id) {
         log.debug("Вызван UserRepository.findById()");
 
-        try {
             log.debug("Загрузка sql");
             String sql = sqlLoader.load(SqlPath.FIND_USER_BY_ID.toPath());
             log.debug("sql загружен успешно");
@@ -86,10 +79,6 @@ public class UserRepositoryImpl implements UserRepository {
 
             log.info("Возвращаем user");
             return user;
-        }catch (EmptyResultDataAccessException e) {
-            log.error("Произошла ошибка");
-            throw new EntityNotFoundException("User with id: " + id + " not found");
-        }
     }
 
     @Override
@@ -111,7 +100,6 @@ public class UserRepositoryImpl implements UserRepository {
         String email = user.getFirstEmail().getEmail();
         log.debug("данные успешно положены в переменные");
 
-        try {
             log.info("Отправляем sql в бд, для создания пользователя");
             jdbcTemplate.queryForObject(
                     sql,
@@ -126,10 +114,6 @@ public class UserRepositoryImpl implements UserRepository {
                             email},
                     Long.class);
             log.info("Пользователь успешно создан!");
-        }catch (DataAccessException e) {
-           log.error("При создании пользователя произошла ошибка");
-           throw e;
-        }
     }
 
 
@@ -152,7 +136,6 @@ public class UserRepositoryImpl implements UserRepository {
         String last_name = user.getProfile().getLastName();
         String description = user.getProfile().getDescription();
         log.debug("Переменные созданы");
-        try {
             log.info("Запрос на обновления пользователя в бд");
             jdbcTemplate.queryForObject(
                     sql, new Object[]
@@ -168,10 +151,6 @@ public class UserRepositoryImpl implements UserRepository {
                     Long.class
             );
             log.info("Пользователь обновлен");
-        }catch (DataAccessException e) {
-            log.error("Произошла ошибка");
-            throw e;
-        }
     }
 
 
@@ -183,14 +162,9 @@ public class UserRepositoryImpl implements UserRepository {
         String sql = sqlLoader.load(SqlPath.DELETE_USER_BY_USERNAME.toPath());
         log.debug("sql загружен");
 
-        try {
-            log.info("запрос на удаление пользователя отправлен");
-            jdbcTemplate.update(sql, username);
-            log.info("Пользователь удален");
-        }catch (DataAccessException e) {
-            log.error("Произошла ошибка");
-            throw e;
-        }
+        log.info("запрос на удаление пользователя отправлен");
+        jdbcTemplate.update(sql, username);
+        log.info("Пользователь удален");
     }
 
     @Override
@@ -201,15 +175,10 @@ public class UserRepositoryImpl implements UserRepository {
         String sql = sqlLoader.load(SqlPath.DELETE_USER_BY_ID.toPath());
         log.debug("sql загружен");
 
-        try {
-            log.info("запрос на удаление пользователя отправлен");
-            jdbcTemplate.queryForObject(sql, new Object[]{id}, Long.class);
-            log.info("Пользователь удален");
+        log.info("запрос на удаление пользователя отправлен");
+        jdbcTemplate.queryForObject(sql, new Object[]{id}, Long.class);
+        log.info("Пользователь удален");
 
-        }catch (DataAccessException e) {
-            log.error("Произошла ошибка");
-            throw e;
-        }
     }
 
     @Override

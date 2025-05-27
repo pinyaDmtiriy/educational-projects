@@ -8,10 +8,11 @@ import com.example.project.dto.responseDto.user.UpdateUserDto;
 import com.example.project.entity.User;
 import com.example.project.enumName.RoleName;
 import com.example.project.pojo.ResponseBuilder;
+import com.example.project.repo.UserRepository;
 import com.example.project.repo.adm.AdmUserRepository;
-import com.example.project.service.UserService;
 import com.example.project.service.crud.create.CreateService;
 import com.example.project.service.crud.read.ReadService;
+import com.example.project.service.crud.update.UpdateService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -23,26 +24,31 @@ public class AdmThreeServiceImpl implements AdmThreeService {
     private ReadService readService;
     private CreateService createService;
     private AdmUserRepository admUserRepository;
+    private UpdateService updateService;
+    private UserRepository userRepository;
 
-    public AdmThreeServiceImpl(ReadService readService, CreateService createService, AdmUserRepository admUserRepository) {
+    public AdmThreeServiceImpl(ReadService readService, CreateService createService, AdmUserRepository admUserRepository, UpdateService updateService, UserRepository userRepository) {
         this.readService = readService;
         this.createService = createService;
         this.admUserRepository = admUserRepository;
+        this.updateService = updateService;
+        this.userRepository = userRepository;
     }
 
     @Override
     public void updateUser(UpdateUserDto userDto) {
-        
+        User user = userRepository.findByUsername(userDto.username());
+        updateService.updateUser(userDto, user);
     }
 
     @Override
     public void deleteByUsername(String username) {
-
+        userRepository.deleteByUsername(username);
     }
 
     @Override
-    public void deleteById(Long username) {
-
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
     }
 
     @Override

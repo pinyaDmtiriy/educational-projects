@@ -3,6 +3,8 @@ package com.example.project.pojo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.validation.BindingResult;
 
 import java.util.List;
@@ -11,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ErrorResponse {
-    String message;
-    List<String> errors;
+    private String message;
+    private List<String> errors;
 
     public ErrorResponse(String message) {
         this.message = message;
@@ -28,5 +30,13 @@ public class ErrorResponse {
 
     public static ErrorResponse fromBanned() {
         return new ErrorResponse("access to account is restricted");
+    }
+
+    public static ErrorResponse fromBadSql() {
+        return new ErrorResponse("server problems");
+    }
+
+    public static ErrorResponse message(String message) {
+        return new ErrorResponse(message);
     }
 }

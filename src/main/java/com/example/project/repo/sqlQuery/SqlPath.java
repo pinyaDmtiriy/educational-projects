@@ -11,11 +11,6 @@ public enum SqlPath {
 
     // CREATE
 
-    @Deprecated(since = "устарело")
-    CREATE_USER_REGISTRATIONDTO("sqlQuery/create_user_registrationDto.sql"),
-    @Deprecated(since = "устарело")
-    CREATE_PROFILE_REGISTRATIONPROFILEDTO("sqlQuery/create_profile_registrationProfileDto.sql"),
-
     CREATE_USER_REGISTRATION_DTO("sqlQuery/user_registrationDto.sql"),
 
     // UPDATE

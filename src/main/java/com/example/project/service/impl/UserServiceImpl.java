@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     public ResponseMessage create(RegistrationDto user) {
         log.info("UserService.create() вызван для пользователя: {}", user.username());
 
-        log.info("Передача данных в CreateService.create()");
+        log.debug("Передача данных в CreateService.create()");
         createService.create(user);
         return ResponseBuilder.responseMessage("registration successful");
     }
@@ -48,12 +48,11 @@ public class UserServiceImpl implements UserService {
         User user = getCurrentUser();
         log.info("UserService.delete() вызван для пользователя: {}", user.getUsername());
 
-        log.info("Передача данных в checkStatus()");
+        log.debug("Передача данных в checkStatus()");
         checkStatus(user);
 
-        log.info("Передача данных в DeleteService.delete()");
+        log.debug("Передача данных в DeleteService.delete()");
         deleteService.delete(user.getId());
-        log.info("Успешное удаление пользователя");
     }
 
     @Override
@@ -61,12 +60,12 @@ public class UserServiceImpl implements UserService {
         User user = getCurrentUser();
         log.info("UserService.update вызван для пользователя: {}", user.getUsername());
 
-        log.info("Передача данных в checkStatus()");
+        log.debug("Передача данных в checkStatus()");
         checkStatus(user);
 
-        log.info("Передача данных в UpdateService.updateUser()");
+        log.debug("Передача данных в UpdateService.updateUser()");
         updateService.updateUser(userDto, user);
-        log.info("Успешное обновление данных пользователя");
+        log.debug("Успешное обновление данных пользователя");
 
         return ResponseBuilder.responseMessage("data update!");
     }
@@ -76,10 +75,10 @@ public class UserServiceImpl implements UserService {
         User user = getCurrentUser();
         log.info("UserService.read вызван для пользователя: {}", user.getUsername());
 
-        log.info("Передача данных в checkStatus()");
+        log.debug("Передача данных в checkStatus()");
         checkStatus(user);
 
-        log.info("Передача данных в ReadService.read");
+        log.debug("Передача данных в ReadService.read");
         return readService.read(user);
     }
 
@@ -88,7 +87,7 @@ public class UserServiceImpl implements UserService {
         if(user.getStatus().equals(StatusName.BANNED)) {
             throw new BANNED("BANNED");
         }
-        log.info("Успешная проверка в checkStatus()");
+        log.debug("Успешная проверка в checkStatus()");
     }
 
     private User getCurrentUser() {

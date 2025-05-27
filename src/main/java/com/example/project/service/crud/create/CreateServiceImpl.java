@@ -8,6 +8,7 @@ import com.example.project.entity.User;
 import com.example.project.enumName.RoleName;
 import com.example.project.enumName.StatusName;
 import com.example.project.repo.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class CreateServiceImpl implements CreateService{
 
     public UserRepository userRepository;
@@ -30,10 +32,13 @@ public class CreateServiceImpl implements CreateService{
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void create(RegistrationDto dto) {
+        log.info("Вызов CreateService.create");
+
         User user = new User();
         FirstEmails email = new FirstEmails();
         Profile profile = new Profile();
 
+        log.debug("Начало  маппинга");
         Set<Role> roles = Set.of(new Role(RoleName.ROLE_USER));
 
         profile.setFirstName(dto.first_name());
@@ -50,6 +55,9 @@ public class CreateServiceImpl implements CreateService{
         user.setStatus(StatusName.UNBANNED);
         user.setRoles(roles);
 
+        log.debug("конец маппинга");
+
+        log.debug("Передача данных в userRepository.create");
         userRepository.create(user);
     }
 
