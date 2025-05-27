@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -77,7 +78,7 @@ public class JwtUtil {
             Jwts.parser().verifyWith(getKey()).build().parseSignedClaims(token);
             return true;
         }catch (Exception e){
-            return false;
+            throw e;
         }
     }
 
